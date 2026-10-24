@@ -1,0 +1,33 @@
+---
+- name: Update Windows and reboot when required
+  hosts: windows
+  gather_facts: false
+
+  tasks:
+    - name: Check for available Windows updates
+      ansible.windows.win_updates:
+        category_names: "*"
+        state: searched
+      register: available_updates
+
+    - name: Display the number of available updates
+      ansible.builtin.debug:
+        msg: "Updates found: {{ available_updates.found_update_count}}"
+    
+    - name: Install applicable updates and reboot when required
+      ansible.windows.win_updates:
+        category_names: "*"
+        state: installed
+        reboot: true
+        reboot_timeout: 3600
+      register: update_results
+
+    - name: Verify Windows is reachable after updating
+      ansible.windows.win_ping:
+
+    - name: Display update results
+      ansible.builtin.debug:
+        msg:
+          - "Windows update tasks completed successfully."
+          - "Updates installed: {{ update_results.installed_update_count }}"
+          - "Updates failed: {{ update_results.failed_update_count }}"
