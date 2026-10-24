@@ -1,0 +1,10 @@
+---
+- name: Install Firefox silently on Windows
+  hosts: windows
+  gather_facts: false
+
+  tasks: 
+    - name: Check whether Firefox is already installed
+    - name: Download and install Firefox when missing
+    - name: Check that the Firefox executable exists
+    - name: Verify Firefox Installation Succeeded
