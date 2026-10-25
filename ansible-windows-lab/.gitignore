@@ -1,0 +1,17 @@
+# Ansible
+*.retry
+.vault_password
+vault.yml
+
+# Local secrets
+.env
+secrets.yml
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+
+# Editor/OS files
+.vscode/
+.DS_Store

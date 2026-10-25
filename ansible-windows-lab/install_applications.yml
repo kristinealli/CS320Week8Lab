@@ -3,8 +3,45 @@
   hosts: windows
   gather_facts: false
 
+  vars: 
+    firefox_download_url: 'https://download.mozilla.org/?product=firefox-latest-ssl&os=win64&lang=en-US'
+    firefox_installer_path: 'C:\Temp\FirefoxSetup.exe'
+    firefox_executable_path: 'C:\Program Files\Mozilla Firefox\firefox.exe' 
+
   tasks: 
     - name: Check whether Firefox is already installed
+      ansible.windows.win_stat:
+        path: "{{ firefox_executable_path }}"
+      register: firefox_before
+
     - name: Download and install Firefox when missing
+      when: not firefox_before.stat.exists
+      block:
+        - name: Create the installer download directory
+          ansible.windows.win_file:
+            path: 'C:\Temp'
+            state: directory
+
+        - name: Download the Firefox installer
+          ansible.windows.win_get_url:
+            url: "{{ firefox_download_url }}"
+            dest: "{{ firefox_installer_path }}"
+
+        - name: Install Firefox without user interaction
+          ansible.windows.win_package:
+            path: "{{ firefox_installer_path }}"
+            arguments: '/S'
+            creates_path: "{{ firefox_executable_path }}"
+            state: present
+
     - name: Check that the Firefox executable exists
+      ansible.windows.win_stat:
+        path: "{{ firefox_executable_path }}"
+      register: firefox_after
+
     - name: Verify Firefox Installation Succeeded
+      ansible.builtin.assert:
+        that:
+          -firefox_after.stat.exists
+        fail_msg: "Firefox was not found at the expected installation path."
+        success_msg: "Firefox is installed and its executable was verified."
