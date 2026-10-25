@@ -5,5 +5,37 @@
 
   tasks:
     - name: Allow inbound TCP traffic on port 3389
+      community.windows.win_firewall_rule:
+        name: Ansible - Allow TCP 3389
+        description: Allow inbound TCP 3389 (part of week 8 Lab)
+        direction: in
+        action: allow
+        protocol: tcp
+        localport: '3389'
+        profiles: 
+          - domain
+          - private
+          - public
+        state: present
+        enabled: true
+
     - name: Allow inbound UDP traffic on port 3389
+      community.windows.win_firewall_rule:
+        name: Ansible - Allow UDP 3389
+        description: Allow inbound UDP 3389 (part of week 8 Lab)
+        direction: in
+        action: allow
+        protocol: udp
+        localporrt: '3389'
+        profiles: 
+          - domain
+          - private
+          - public
+        state: present
+        enabled: true
+
     - name: Display configuration summary
+      ansible.builtin.debug:
+        msg: 
+          - "Inbound TCP 3389 is allowed for Domain, Private, and Public profiles."
+          - "Inbound UDP 3389 is allowed for Domain, Private, and Public profiles."
