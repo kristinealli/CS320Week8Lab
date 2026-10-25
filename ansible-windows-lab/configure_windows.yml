@@ -26,7 +26,7 @@
         direction: in
         action: allow
         protocol: udp
-        localporrt: '3389'
+        localport: '3389'
         profiles: 
           - domain
           - private

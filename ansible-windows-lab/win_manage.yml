@@ -1,0 +1,13 @@
+---
+
+- name: Run Windows updates playbook
+  ansible.builtin.import_playbook: windows_updates.yml
+
+- name: Run application installation playbook
+  ansible.builtin.import_playbook: install_applications.yml
+
+- name: Run Windows firewall configuration playbook
+  ansible.builtin.import_playbook: configure_windows.yml
+
+- name: Run Windows services playbook
+  ansible.builtin.import_playbook: manage_services.yml

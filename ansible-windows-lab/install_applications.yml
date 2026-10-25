@@ -42,6 +42,6 @@
     - name: Verify Firefox Installation Succeeded
       ansible.builtin.assert:
         that:
-          -firefox_after.stat.exists
+          - firefox_after.stat.exists
         fail_msg: "Firefox was not found at the expected installation path."
         success_msg: "Firefox is installed and its executable was verified."
