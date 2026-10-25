@@ -5,7 +5,31 @@
 
   tasks: 
     - name: Restart the Print Spooler service
+      ansible.windows.win_service:
+        name: Spooler
+        state: restarted
+
     - name: Get the Print Spooler status after restarting
+      ansible.windows.win_service_info:
+        name: Spooler
+      register: spooler_info
+
     - name: Confirm the Print Spooler service exists
+      ansible.builtin.assert:
+        that: 
+          -  spooler_info.services | length > 0
+        fail_msg: "The Print Spooler service was not found."
+
     - name: Confirm the Print Spooler is running
+      ansible.builtin.assert:
+        that: 
+          - spooler_info.services[0].state == 'started'
+        fail_msg: "The Print Spooler is not running after the restart."
+        success_msg: "The Print Spooler was restarted and is running."
+
     - name: Display the final service status
+      ansible.builtin.debug:
+        msg: 
+          - "Service: {{ spooler_info.services[0].display_name }}"
+          - "Service name: {{ spooler_info.services[0].name }}"
+          - "State: {{ spooler_info.services[0].state }}"
