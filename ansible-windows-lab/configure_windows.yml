@@ -1,0 +1,9 @@
+---
+- name: Configure Windows Firewall for port 3389
+  hosts: windows
+  gather_facts: false
+
+  tasks:
+    - name: Allow inbound TCP traffic on port 3389
+    - name: Allow inbound UDP traffic on port 3389
+    - name: Display configuration summary
